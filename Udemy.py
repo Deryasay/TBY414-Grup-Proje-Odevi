@@ -1,18 +1,20 @@
 import pandas as pd
 import numpy as np
-df = pd.read_excel("udemy.xlsx",header=0)
+from kmodes.kmodes import KModes
+
+df = pd.read_excel("udemy_2.xlsx",header=0)
 print(df.shape)
 
-print("Tüm Dataframe")
+print("Tum Dataframe")
 print(df)
-print("Ders Adı sütunu")
-print(df["Ders Adı"])
 
-input("Devam etmek için enter'a basın.")
-print("Videoların toplam saati 50'den fazla olan dersleri filtreleyeceğiz.")
+input("Devam etmek icin enter'a basin.")
 print(df.index)
-filtreSonuclari = df.sort_values(by='Videoların toplam saati', ascending=False).head(10)
-print(filtreSonuclari)
 
-df.to_excel("udemyfiltre.xlsx")
-print("Excel dosyasına yazıldı. ")
+km_cao = KModes(n_clusters=2, init = "Cao", n_init = 2, verbose=1)
+fitClusters_cao = km_cao.fit_predict(df)
+print(fitClusters_cao)
+df["Kategori"] = fitClusters_cao
+
+df.to_excel("udemyfiltre_2.xlsx")
+print(df)
